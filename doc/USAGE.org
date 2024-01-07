@@ -27,20 +27,14 @@ favourite Internet search engine.
 ** 2. Obtain the source
 
 Clone the source from git:
-: git clone https://github.com/tomscii/zutty.git
+: git clone https://git.hq.sig7.se/zutty.git
 : cd zutty
-
-Alternatively, to download a compressed tarball of a certain release
-version, go to https://github.com/tomscii/zutty/releases, download
-the tarball you want (we recommend the latest one), and uncompress it.
-Further steps assume that your working directory is within the
-uncompressed directory, so =cd= into it!
 
 ** 3. Configure the source
 
-You are supposed to be inside the repository (or release) directory
-structure, i.e., the =zutty= directory created above should be your
-working directory. Issue this command:
+You are supposed to be inside the repository directory structure,
+i.e., the =zutty= directory created above should be your working
+directory. Issue this command:
 
 : ./waf configure
 
