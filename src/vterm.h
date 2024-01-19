@@ -297,6 +297,7 @@ namespace zutty
 
       void csi_ecma48_SL (); // Shift Left
       void csi_ecma48_SR (); // Shift Right
+      void csi_DECSCUSR ();  // Set cursor style
 
       void csi_priDA ();     // Device Attributes (Primary)
       void csi_secDA ();     // Device Attributes (Secondary)
@@ -370,6 +371,8 @@ namespace zutty
       // Terminal state - N.B.: keep resetTerminal () in sync with this!
 
       bool showCursorMode = true;
+      using CursorStyle = CharVdev::Cursor::Style;
+      CursorStyle cursorStyle = CursorStyle::filled_block;
       bool altScreenBufferMode = false;
       bool autoWrapMode = true;
       bool autoNewlineMode = false;

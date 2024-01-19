@@ -1341,6 +1341,7 @@ namespace zutty
             {
             case '@': csi_ecma48_SL (); break;
             case 'A': csi_ecma48_SR (); break;
+            case 'q': csi_DECSCUSR (); break;
             IGNORE_SEQUENCE_ON_BAD_PARAMS;
             default: unhandledInput (ch); break;
             }
