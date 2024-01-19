@@ -1936,6 +1936,7 @@ namespace zutty
       {
       case 0:
          // Reset all options to initial values
+         modifyOtherKeys = opts.modifyOtherKeys;
          break;
       case 1:
          inputOps [1] = 0;
@@ -1978,6 +1979,41 @@ namespace zutty
             }
             break;
          }
+      }
+
+      setState (InputState::Normal);
+   }
+
+   inline void
+   Vterm::csi_XTQMODKEYS ()
+   {
+      TRACE_FUN;
+
+      std::ostringstream oss;
+
+      switch (nInputOps)
+      {
+      case 0:
+         inputOps [0] = 1;
+         nInputOps = 1;
+         // fall through
+      case 1:
+         switch (inputOps [0])
+         {
+         case 0: case 1: case 2:
+            oss << "\e[>" << inputOps [0] << "m";
+            writePty (oss.str ().data (), oss.str ().size ());
+            break;
+         case 4:
+            oss << "\e[>4;" << (int)modifyOtherKeys << "m";
+            writePty (oss.str ().data (), oss.str ().size ());
+            break;
+         default:
+            logI << "XTQMODKEYS: illegal argument "
+                 << inputOps [0] << std::endl;
+            break;
+         }
+         break;
       }
 
       setState (InputState::Normal);

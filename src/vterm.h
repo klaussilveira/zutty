@@ -307,7 +307,8 @@ namespace zutty
       void handle_OSC ();    // Operating System Command
       void csiq_DECSCL ();   // DEC Set Compatibility Level
       void csi_XTWINOPS ();  // Xterm window operations
-      void csi_XTMODKEYS (); // Xterm key modifier options
+      void csi_XTMODKEYS (); // Xterm set/reset key modifier options
+      void csi_XTQMODKEYS ();// Xterm query key modifier options
 
       void dcs_DECRQSS (const std::string&); // DEC Request Status String
 
