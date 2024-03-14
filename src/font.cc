@@ -249,27 +249,32 @@ namespace zutty
       {
          // If we are loading a fixed bitmap strike of an otherwise scaled
          // font, we need the baseline metric.
-         baseline = round (py * (double)face->ascender / face->height);
+         double tpy_asc = opts.fontsize *
+            (double)face->ascender / face->units_per_EM;
+         baseline = trunc (tpy_asc);
       }
    }
 
    void Font::loadScaled (const FT_Face& face)
    {
       logI << "Pixel size " << (int)opts.fontsize << std::endl;
-      if (FT_Set_Pixel_Sizes (face, opts.fontsize, opts.fontsize))
+      if (FT_Set_Pixel_Sizes (face, 0, opts.fontsize))
          throw std::runtime_error ("Could not set pixel sizes");
 
       double tpx = opts.fontsize *
          (double)face->max_advance_width / face->units_per_EM;
-      double tpy = tpx * face->height / face->max_advance_width + 1;
+      double tpy_asc = opts.fontsize *
+         (double)face->ascender / face->units_per_EM;
+      double tpy_desc = opts.fontsize *
+         (double)face->descender / face->units_per_EM;
       if (!overlay && !dwidth)
       {
-         px = round (tpx);
-         py = round (tpy);
+         px = trunc (tpx);
+         py = trunc (tpy_asc) + trunc (-tpy_desc);
       }
       if (!overlay)
       {
-         baseline = round (tpy * face->ascender / face->height);
+         baseline = trunc (tpy_asc);
       }
       logI << "Glyph size " << px << "x" << py << ", baseline " << baseline
            << std::endl;
@@ -317,8 +322,8 @@ namespace zutty
 
       // raw/rasterized bitmap dimensions
       const auto& bmp = face->glyph->bitmap;
-      const int bh = std::min ({(int)bmp.rows, (int)py, py - dy + sh});
-      const int bw = std::min ({(int)bmp.width, (int)px, px - dx + sw});
+      const int bh = std::min ({(int)bmp.rows - sh, py - dy});
+      const int bw = std::min ({(int)bmp.width - sw, px - dx});
 
       const int atlas_row_offset = nx * px * py;
       const int atlas_glyph_offset = apos.y * atlas_row_offset + apos.x * px;
@@ -367,11 +372,11 @@ namespace zutty
          }
          break;
       case FT_PIXEL_MODE_GRAY:
-         for (int j = sh; j < bh; ++j)
+         for (int j = 0; j < bh; ++j)
          {
-            bmp_src_row = bmp.buffer + j * bmp.pitch + sw;
+            bmp_src_row = bmp.buffer + (j + sh) * bmp.pitch + sw;
             atl_dst_row = atlasBuf.data () + atlas_write_offset + j * nx * px;
-            for (int k = sw; k < bw; ++k)
+            for (int k = 0; k < bw; ++k)
             {
                *atl_dst_row++ = *bmp_src_row++;
             }
