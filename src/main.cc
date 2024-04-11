@@ -157,7 +157,8 @@ makeXWindow (const char* name, int width, int height, int px, int py,
 
    root = RootWindow (xDisplay, DefaultScreen (xDisplay));
 
-   if (!eglChooseConfig (eglDpy, eglAttrs, &config, 1, &numConfigs)) {
+   if (!eglChooseConfig (eglDpy, eglAttrs, &config, 1, &numConfigs))
+   {
       logE << "Couldn't get an EGL visual config" << std::endl;
       exit(1);
    }
@@ -165,7 +166,8 @@ makeXWindow (const char* name, int width, int height, int px, int py,
    assert (config);
    assert (numConfigs > 0);
 
-   if (!eglGetConfigAttrib (eglDpy, config, EGL_NATIVE_VISUAL_ID, &vid)) {
+   if (!eglGetConfigAttrib (eglDpy, config, EGL_NATIVE_VISUAL_ID, &vid))
+   {
       logE << "eglGetConfigAttrib() failed" << std::endl;
       exit (1);
    }
@@ -1439,6 +1441,8 @@ main (int argc, char* argv[])
       {
          if (!eglMakeCurrent (eglDpy, eglSurface, eglSurface, eglCtx))
             throw std::runtime_error ("Error: eglMakeCurrent() failed");
+         if (!eglSwapInterval (eglDpy, 0))
+            throw std::runtime_error ("Error: eglSwapInterval() failed");
          if (opts.glinfo)
             printGLInfo (eglDpy);
       },
