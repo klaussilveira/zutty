@@ -347,7 +347,7 @@ namespace zutty
    void
    Options::printVersion () const
    {
-      std::cout << "Zutty " ZUTTY_VERSION "\n"
+      std::cout << "Zutty\n"
                 << "Copyright (C) 2020 Tom Szilagyi\n\n"
                 << "This program comes with ABSOLUTELY NO WARRANTY.\n"
                 << "Zutty is free software, and you are welcome to redistribute it\n"

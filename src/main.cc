@@ -425,7 +425,7 @@ setupSignals ()
 static int
 startShell (const char* execPath, const char* const argv[])
 {
-   int ptyFd;
+   int ptyFd = 0;
    pid_t pid;
 
    pid = zutty::pty_fork (ptyFd, opts.nCols, opts.nRows);
@@ -1329,9 +1329,6 @@ main (int argc, char* argv[])
 
    if (opts.verbose)
       opts.printVersion ();
-
-   if (setenv ("ZUTTY_VERSION", ZUTTY_VERSION, 1) < 0)
-      SYS_ERROR ("setenv (ZUTTY_VERSION)");
 
    char argv0 [PATH_MAX];
    char progPath [PATH_MAX];
