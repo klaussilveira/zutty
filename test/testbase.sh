@@ -142,7 +142,7 @@ export PATH="$(pwd)/deps/bin":$PATH
 [ ${PROFILE} == "zutty" ] && [ -f ${HOME}/.Xresources ] && xrdb -remove
 
 # execute UUT and store its pid
-${UUT_EXE} >${UUT_LOG} 2>&1 &
+${UUT_EXE} ${UUT_ARGS} >${UUT_LOG} 2>&1 &
 PID=$!
 echo "UUT pid: ${PID}"
 echo "    log file: ${UUT_LOG}"

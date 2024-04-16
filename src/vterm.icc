@@ -238,6 +238,7 @@ namespace zutty
    Vterm::resetScreen ()
    {
       showCursorMode = true;
+      cursorStyle = CharVdev::Cursor::Style::filled_block;
       autoWrapMode = true;
       autoNewlineMode = false;
       keyboardLocked = false;
@@ -615,7 +616,10 @@ namespace zutty
       {
          cf->setCursorPos (posY, posX);
          using CS = CharVdev::Cursor::Style;
-         cf->setCursorStyle (hasFocus ? CS::filled_block : CS::hollow_block);
+         CS cs = cursorStyle;
+         if (!hasFocus && cursorStyle == CS::filled_block)
+            cs = CS::hollow_block;
+         cf->setCursorStyle (cs);
       }
    }
 
@@ -729,6 +733,21 @@ namespace zutty
       int arg = inputOps [0] ? inputOps [0] : 1u;
       arg = std::min (arg, nColsEff - hMargin);
       insertCols (hMargin, arg);
+      setState (InputState::Normal);
+   }
+
+   inline void
+   Vterm::csi_DECSCUSR ()
+   {
+      TRACE_FUN;
+      int arg = inputOps [0] ? inputOps [0] : 1u;
+      using CS = CharVdev::Cursor::Style;
+      switch (arg)
+      {
+      case 3: case 4: cursorStyle = CS::underline; break;
+      case 5: case 6: cursorStyle = CS::bar; break;
+      default: cursorStyle = CS::filled_block; break;
+      }
       setState (InputState::Normal);
    }
 
@@ -1917,6 +1936,7 @@ namespace zutty
       {
       case 0:
          // Reset all options to initial values
+         modifyOtherKeys = opts.modifyOtherKeys;
          break;
       case 1:
          inputOps [1] = 0;
@@ -1959,6 +1979,41 @@ namespace zutty
             }
             break;
          }
+      }
+
+      setState (InputState::Normal);
+   }
+
+   inline void
+   Vterm::csi_XTQMODKEYS ()
+   {
+      TRACE_FUN;
+
+      std::ostringstream oss;
+
+      switch (nInputOps)
+      {
+      case 0:
+         inputOps [0] = 1;
+         nInputOps = 1;
+         // fall through
+      case 1:
+         switch (inputOps [0])
+         {
+         case 0: case 1: case 2:
+            oss << "\e[>" << inputOps [0] << "m";
+            writePty (oss.str ().data (), oss.str ().size ());
+            break;
+         case 4:
+            oss << "\e[>4;" << (int)modifyOtherKeys << "m";
+            writePty (oss.str ().data (), oss.str ().size ());
+            break;
+         default:
+            logI << "XTQMODKEYS: illegal argument "
+                 << inputOps [0] << std::endl;
+            break;
+         }
+         break;
       }
 
       setState (InputState::Normal);

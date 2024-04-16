@@ -210,22 +210,46 @@ void main ()
       }
    }
 
-   if (charPos == cursorPos.xy && cursorStyle == 2)
+   if (charPos == cursorPos.xy)
    {
       vec4 pixel = vec4 (crColor, 1.0);
-      for (int j = 0; j < srcGlyphPixels.x; j++)
+      if (cursorStyle == 2)
       {
-         ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, 0);
-         imageStore (imgOut, pxCoords, pixel);
-         pxCoords += ivec2 (0, srcGlyphPixels.y - 1);
-         imageStore (imgOut, pxCoords, pixel);
+         for (int j = 0; j < srcGlyphPixels.x; j++)
+         {
+            ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, 0);
+            imageStore (imgOut, pxCoords, pixel);
+            pxCoords += ivec2 (0, srcGlyphPixels.y - 1);
+            imageStore (imgOut, pxCoords, pixel);
+         }
+         for (int k = 1; k < srcGlyphPixels.y - 1; k++)
+         {
+            ivec2 pxCoords = charPos * glyphPixels + ivec2 (0, k);
+            imageStore (imgOut, pxCoords, pixel);
+            pxCoords += ivec2 (srcGlyphPixels.x - 1, 0);
+            imageStore (imgOut, pxCoords, pixel);
+         }
       }
-      for (int k = 1; k < srcGlyphPixels.y - 1; k++)
+      else if (cursorStyle == 3)
       {
-         ivec2 pxCoords = charPos * glyphPixels + ivec2 (0, k);
-         imageStore (imgOut, pxCoords, pixel);
-         pxCoords += ivec2 (srcGlyphPixels.x - 1, 0);
-         imageStore (imgOut, pxCoords, pixel);
+         int hoffset = srcGlyphPixels.y - 2;
+         for (int j = 0; j < srcGlyphPixels.x; j++)
+         {
+            ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, hoffset);
+            imageStore (imgOut, pxCoords, pixel);
+            pxCoords += ivec2 (0, 1);
+            imageStore (imgOut, pxCoords, pixel);
+         }
+      }
+      else if (cursorStyle == 4)
+      {
+         for (int k = 0; k < srcGlyphPixels.y; k++)
+         {
+            ivec2 pxCoords = charPos * glyphPixels + ivec2 (0, k);
+            imageStore (imgOut, pxCoords, pixel);
+            pxCoords += ivec2 (1, 0);
+            imageStore (imgOut, pxCoords, pixel);
+         }
       }
    }
 }

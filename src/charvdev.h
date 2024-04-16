@@ -98,7 +98,9 @@ namespace zutty
          {
             hidden = 0,
             filled_block = 1,
-            hollow_block = 2
+            hollow_block = 2,
+            underline = 3,
+            bar = 4,
          };
          Style style = Style::hidden;
       };

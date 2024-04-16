@@ -1341,6 +1341,7 @@ namespace zutty
             {
             case '@': csi_ecma48_SL (); break;
             case 'A': csi_ecma48_SR (); break;
+            case 'q': csi_DECSCUSR (); break;
             IGNORE_SEQUENCE_ON_BAD_PARAMS;
             default: unhandledInput (ch); break;
             }
@@ -1362,6 +1363,7 @@ namespace zutty
             case '\e': setState (InputState::Normal); break;
             case 'h': csi_privSM (); break;
             case 'l': csi_privRM (); break;
+            case 'm': csi_XTQMODKEYS (); break;
             IGNORE_SEQUENCE_ON_BAD_PARAMS;
             default: unhandledInput (ch); break;
             }

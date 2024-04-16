@@ -359,6 +359,17 @@ image checkpoint):
 
 : test/vttest.sh --step
 
+*** Font rasterization tests
+
+A separate test =fonts.sh= exists that is very similar to the
+correctness tests above, but is not part of [[The CI test script]]. This
+renders a captured hardcopy of a terminal-intensive program (BpyTOP)
+exercising many features (chiefly, Unicode line drawing glyphs) that
+are helpful in spotting errors in the font loading and rasterization
+process employed by Zutty, and validates the result across a matrix of
+several font faces and sizes. Please read the commentary in the test
+script for the fonts required to run the test.
+
 *** Performance tests
 
 The performance of Zutty can be verified with the below tests. These
@@ -417,9 +428,14 @@ with a confirmatory message and zero return code otherwise.
 
 You should always run this at a convenient time (it will occupy your
 screen for about 25 minutes) and observe the successful result before
-sending a patch or submitting a pull request with your changes. For
-extra confidence, build Zutty both with and without debug, and run the
-CI script both with and without the =--debug= option.
+sending a patch with your changes. For extra confidence, build Zutty
+both with and without debug, and run the CI script both with and
+without the =--debug= option.
+
+If you have changed anything related to font loading or rasterization
+(=font.cc= or =fontpack.cc=), make sure you run the [[Font rasterization
+tests]] as well.  Please read the commentary in the test script for more
+context.
 
 *** Test profiles
 
