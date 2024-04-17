@@ -22,7 +22,7 @@ namespace
    static const char *computeShaderSource = R"(#version 310 es
 
 layout (local_size_x = 1, local_size_y = 1) in;
-layout (rgba32f, binding = 0) writeonly lowp uniform image2D imgOut;
+layout (rgba8, binding = 0) writeonly lowp uniform image2D imgOut;
 layout (binding = 1) uniform lowp sampler2DArray atlas;
 layout (binding = 2) uniform lowp sampler2D atlasMap;
 layout (binding = 3) uniform lowp sampler2DArray atlas_dw;
@@ -273,7 +273,7 @@ void main ()
 
 in highp vec2 texCoord;
 
-layout (rgba32f, binding = 0) readonly lowp uniform image2D imgOut;
+layout (rgba8, binding = 0) readonly lowp uniform image2D imgOut;
 
 uniform highp vec2 viewPixels;
 
@@ -548,9 +548,9 @@ namespace zutty
       glUniform2i (compU_sizeChars, nCols, nRows);
 
       setupTexture (GL_TEXTURE0, GL_TEXTURE_2D, T_output);
-      glTexStorage2D (GL_TEXTURE_2D, 1, GL_RGBA32F, viewWidth, viewHeight);
+      glTexStorage2D (GL_TEXTURE_2D, 1, GL_RGBA8, viewWidth, viewHeight);
       glBindImageTexture (0, T_output, 0, GL_FALSE, 0, GL_WRITE_ONLY,
-                          GL_RGBA32F);
+                          GL_RGBA8);
       glCheckError ();
 
       setupStorageBuffer <Cell> (0, B_text, nRows * nCols);
