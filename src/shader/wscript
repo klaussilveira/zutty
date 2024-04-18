@@ -1,0 +1,19 @@
+#! ../../waf
+# encoding: utf-8
+
+from waflib import TaskGen
+TaskGen.declare_chain(
+    name='make_include',
+    rule="sed -e 's/\\\\/\\\\\\\\/g' -e 's/\"/\\\\\"/g' "
+    "-e 's/\\(.*\\)/\"\\1\\\\n\"/' ${SRC} > ${TGT}",
+    ext_in='.glsl',
+    ext_out='.glsl.h')
+
+def options(opt):
+    pass
+
+def configure(cfg):
+    pass
+
+def build(bld):
+    bld(source=bld.path.ant_glob('*.glsl'))

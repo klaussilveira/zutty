@@ -2,12 +2,14 @@
 # encoding: utf-8
 
 def options(opt):
-    pass
+    opt.recurse('shader')
 
 def configure(cfg):
-    pass
+    cfg.recurse('shader')
 
 def build(bld):
+    bld.recurse('shader')
     src = bld.path.ant_glob('*.cc')
     bld.program(features='cxx', source=src, target=bld.env.target,
+                includes='shader',
                 use=['EGL', 'FT', 'GLES', 'THREAD', 'XMU'])

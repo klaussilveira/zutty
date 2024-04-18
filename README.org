@@ -229,7 +229,7 @@ but some will possibly be implemented in the future.
   the whole breadth and depth of glyph and language support that
   Unicode defines.  Currently not supported:
   - Characters with a code point above =U+FFFF= (that is, outside the
-    Basic Multilingual Pane);
+    Basic Multilingual Plane);
   - Bidirectional (right-to-left) text;
   - Composing characters (things that can only be represented as a
     base glyph plus one or more composing glyphs superimposed, even in
