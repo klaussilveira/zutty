@@ -17,7 +17,7 @@ layout (binding = 1) uniform lowp sampler2DArray atlas;
 layout (binding = 2) uniform lowp sampler2D atlasMap;
 layout (binding = 3) uniform lowp sampler2DArray atlas_dw;
 layout (binding = 4) uniform lowp sampler2D atlasMap_dw;
-uniform lowp ivec2 glyphPixels;
+uniform lowp ivec2 glyphSize;
 uniform lowp ivec2 sizeChars;
 uniform lowp ivec3 cursorColor;
 uniform lowp ivec4 cursorPos; // .xy: current; .zw: previous
@@ -38,14 +38,21 @@ struct Cell
 
 layout (std430, binding = 0) buffer CharVideoMem
 {
-   Cell cells[];
+   Cell cells [];
 } vmem;
+
+vec3 colorFromRGBu8 (highp uint v)
+{
+   return vec3 (float (bitfieldExtract (v, 0, 8)),
+                float (bitfieldExtract (v, 8, 8)),
+                float (bitfieldExtract (v, 16, 8))) / 255.0;
+}
 
 void main ()
 {
    ivec2 charPos = ivec2 (gl_GlobalInvocationID.xy);
    int idx = sizeChars.x * charPos.y + charPos.x;
-   Cell cell = vmem.cells[idx];
+   Cell cell = vmem.cells [idx];
 
    if (deltaFrame == 1)
    {
@@ -55,7 +62,7 @@ void main ()
           (idx < selectDamage.x || idx >= selectDamage.y))
          return;
    }
-   vmem.cells[idx].charData = bitfieldInsert (cell.charData, 0u, 23, 1);
+   vmem.cells [idx].charData = bitfieldInsert (cell.charData, 0u, 23, 1);
 
    ivec2 charCode =
       ivec2 (bitfieldExtract (cell.charData, 0, 8),  // Lowest byte
@@ -69,7 +76,7 @@ void main ()
    if (dwidth == 1u && charPos.x < sizeChars.x - 1)
    {
       // check validity (dwidth_cont marker in the cell to the right)
-      if (bitfieldExtract (vmem.cells[idx + 1].charData, 17, 1) != 1u)
+      if (bitfieldExtract (vmem.cells [idx + 1].charData, 17, 1) != 1u)
          dwidth = 0u;
    }
 
@@ -86,14 +93,8 @@ void main ()
    else
       atlasPos = ivec2 (vec2 (256) * texelFetch (atlasMap_dw, charCode, 0).zw);
 
-   vec3 fgColor = vec3 (float (bitfieldExtract (cell.fg, 0, 8)),
-                        float (bitfieldExtract (cell.fg, 8, 8)),
-                        float (bitfieldExtract (cell.fg, 16, 8))) / 255.0;
-
-   vec3 bgColor = vec3 (float (bitfieldExtract (cell.bg, 0, 8)),
-                        float (bitfieldExtract (cell.bg, 8, 8)),
-                        float (bitfieldExtract (cell.bg, 16, 8))) / 255.0;
-
+   vec3 fgColor = colorFromRGBu8 (cell.fg);
+   vec3 bgColor = colorFromRGBu8 (cell.bg);
    vec3 crColor = vec3 (cursorColor) / 255.0;
 
    if (selectRectMode == 1)
@@ -125,78 +126,72 @@ void main ()
       bgColor = crColor;
    }
 
-   ivec2 srcGlyphPixels = glyphPixels;
+   ivec2 cellSize = glyphSize;
    if (dwidth == 1u)
-      srcGlyphPixels = ivec2 (2, 1) * glyphPixels;
+      cellSize = ivec2 (2, 1) * glyphSize;
+
+   ivec2 src = atlasPos * cellSize;
+   ivec2 dst = charPos * glyphSize;
 
    if (dwidth == 0u)
    {  // render regular cell
-      for (int j = 0; j < glyphPixels.x; j++)
+      for (int k = 0; k < cellSize.y; k++)
       {
-         for (int k = 0; k < glyphPixels.y; k++)
+         for (int j = 0; j < cellSize.x; j++)
          {
-            ivec2 txCoords = atlasPos * srcGlyphPixels + ivec2 (j, k);
-            ivec3 txc = ivec3 (txCoords, fontIdx);
+            ivec3 txc = ivec3 (src + ivec2 (j, k), fontIdx);
             float lumi = texelFetch (atlas, txc, 0).r;
-            vec4 pixel = vec4 (fgColor * lumi + bgColor * (1.0 - lumi), 1.0);
-            ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, k);
-            imageStore (imgOut, pxCoords, pixel);
+            vec4 pixel = vec4 (mix (bgColor, fgColor, lumi), 1.0);
+            imageStore (imgOut, dst + ivec2 (j, k), pixel);
          }
       }
    }
    else if (hasDoubleWidth == 1)
    {  // render double-width cell
-      for (int j = 0; j < srcGlyphPixels.x; j++)
+      for (int k = 0; k < cellSize.y; k++)
       {
-         for (int k = 0; k < srcGlyphPixels.y; k++)
+         for (int j = 0; j < cellSize.x; j++)
          {
-            ivec2 txCoords = atlasPos * srcGlyphPixels + ivec2 (j, k);
-            ivec3 txc = ivec3 (txCoords, fontIdx);
+            ivec3 txc = ivec3 (src + ivec2 (j, k), fontIdx);
             float lumi = texelFetch (atlas_dw, txc, 0).r;
-            vec4 pixel = vec4 (fgColor * lumi + bgColor * (1.0 - lumi), 1.0);
-            ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, k);
-            imageStore (imgOut, pxCoords, pixel);
+            vec4 pixel = vec4 (mix (bgColor, fgColor, lumi), 1.0);
+            imageStore (imgOut, dst + ivec2 (j, k), pixel);
          }
       }
    }
    else
    {  // no double-width font -- draw an empty box
-      for (int j = 0; j < srcGlyphPixels.x; j++)
+      for (int k = 0; k < cellSize.y; k++)
       {
-         for (int k = 0; k < srcGlyphPixels.y; k++)
+         for (int j = 0; j < cellSize.x; j++)
          {
             float lumi = 0.0;
-            if ((0 < j && j < srcGlyphPixels.x - 1) &&
-                (0 < k && k < srcGlyphPixels.y - 1) &&
-                (j == 1 || j == srcGlyphPixels.x - 2 ||
-                 k == 1 || k == srcGlyphPixels.y - 2))
+            if ((0 < j && j < cellSize.x - 1) &&
+                (0 < k && k < cellSize.y - 1) &&
+                (j == 1 || j == cellSize.x - 2 ||
+                 k == 1 || k == cellSize.y - 2))
                lumi = 0.7;
-            vec4 pixel = vec4 (fgColor * lumi + bgColor * (1.0 - lumi), 1.0);
-            ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, k);
-            imageStore (imgOut, pxCoords, pixel);
+            vec4 pixel = vec4 (mix (bgColor, fgColor, lumi), 1.0);
+            imageStore (imgOut, dst + ivec2 (j, k), pixel);
          }
       }
    }
 
    if (underline == 1u)
    {
-      for (int j = 0; j < srcGlyphPixels.x; j++)
+      vec4 pixel = vec4 (fgColor, 1.0);
+      for (int j = 0; j < cellSize.x; j++)
       {
-         vec4 pixel = vec4 (fgColor, 1.0);
-         ivec2 pxCoords = charPos * glyphPixels +
-                          ivec2 (j, srcGlyphPixels.y - 1);
-         imageStore (imgOut, pxCoords, pixel);
+         imageStore (imgOut, dst + ivec2 (j, cellSize.y - 1), pixel);
       }
    }
 
    if (showWraps == 1 && wrap == 1u)
    {
       vec4 pixel = vec4 (fgColor, 1.0);
-      for (int k = 0; k < srcGlyphPixels.y; k += 2)
+      for (int k = 0; k < cellSize.y; k += 2)
       {
-         ivec2 pxCoords = charPos * glyphPixels +
-                          ivec2 (srcGlyphPixels.x - 1, k);
-         imageStore (imgOut, pxCoords, pixel);
+         imageStore (imgOut, dst + ivec2 (cellSize.x - 1, k), pixel);
       }
    }
 
@@ -205,40 +200,31 @@ void main ()
       vec4 pixel = vec4 (crColor, 1.0);
       if (cursorStyle == 2)
       {
-         for (int j = 0; j < srcGlyphPixels.x; j++)
+         for (int j = 0; j < cellSize.x; j++)
          {
-            ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, 0);
-            imageStore (imgOut, pxCoords, pixel);
-            pxCoords += ivec2 (0, srcGlyphPixels.y - 1);
-            imageStore (imgOut, pxCoords, pixel);
+            imageStore (imgOut, dst + ivec2 (j, 0), pixel);
+            imageStore (imgOut, dst + ivec2 (j, cellSize.y - 1), pixel);
          }
-         for (int k = 1; k < srcGlyphPixels.y - 1; k++)
+         for (int k = 1; k < cellSize.y - 1; k++)
          {
-            ivec2 pxCoords = charPos * glyphPixels + ivec2 (0, k);
-            imageStore (imgOut, pxCoords, pixel);
-            pxCoords += ivec2 (srcGlyphPixels.x - 1, 0);
-            imageStore (imgOut, pxCoords, pixel);
+            imageStore (imgOut, dst + ivec2 (0, k), pixel);
+            imageStore (imgOut, dst + ivec2 (cellSize.x - 1, k), pixel);
          }
       }
       else if (cursorStyle == 3)
       {
-         int hoffset = srcGlyphPixels.y - 2;
-         for (int j = 0; j < srcGlyphPixels.x; j++)
+         for (int j = 0; j < cellSize.x; j++)
          {
-            ivec2 pxCoords = charPos * glyphPixels + ivec2 (j, hoffset);
-            imageStore (imgOut, pxCoords, pixel);
-            pxCoords += ivec2 (0, 1);
-            imageStore (imgOut, pxCoords, pixel);
+            imageStore (imgOut, dst + ivec2 (j, cellSize.y - 2), pixel);
+            imageStore (imgOut, dst + ivec2 (j, cellSize.y - 1), pixel);
          }
       }
       else if (cursorStyle == 4)
       {
-         for (int k = 0; k < srcGlyphPixels.y; k++)
+         for (int k = 0; k < cellSize.y; k++)
          {
-            ivec2 pxCoords = charPos * glyphPixels + ivec2 (0, k);
-            imageStore (imgOut, pxCoords, pixel);
-            pxCoords += ivec2 (1, 0);
-            imageStore (imgOut, pxCoords, pixel);
+            imageStore (imgOut, dst + ivec2 (0, k), pixel);
+            imageStore (imgOut, dst + ivec2 (1, k), pixel);
          }
       }
    }

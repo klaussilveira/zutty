@@ -201,7 +201,7 @@ namespace zutty
        * Setup compute program
        */
       glUseProgram (P_compute);
-      glUniform2i (compU_glyphPixels, px, py);
+      glUniform2i (compU_glyphSize, px, py);
       glUniform2i (compU_sizeChars, nCols, nRows);
       glUniform1i (compU_showWraps, opts.showWraps ? 1 : 0);
 
@@ -425,7 +425,7 @@ namespace zutty
       linkProgram (P_compute, "compute");
       glUseProgram (P_compute);
 
-      compU_glyphPixels = glGetUniformLocation (P_compute, "glyphPixels");
+      compU_glyphSize = glGetUniformLocation (P_compute, "glyphSize");
       compU_sizeChars = glGetUniformLocation (P_compute, "sizeChars");
       compU_cursorColor = glGetUniformLocation (P_compute, "cursorColor");
       compU_cursorPos = glGetUniformLocation (P_compute, "cursorPos");
@@ -438,7 +438,7 @@ namespace zutty
       compU_hasDoubleWidth = glGetUniformLocation (P_compute, "hasDoubleWidth");
 
       logT << "compute program:"
-           << " uniform glyphPixels=" << compU_glyphPixels
+           << " uniform glyphSize=" << compU_glyphSize
            << " sizeChars=" << compU_sizeChars
            << " cursorColor=" << compU_cursorColor
            << " cursorPos=" << compU_cursorPos
