@@ -36,6 +36,8 @@ namespace zutty
       , px (priFont.getPx ())
       , py (priFont.getPy ())
       , baseline (priFont.getBaseline ())
+      , ulTop (priFont.getUlTop ())
+      , ulThick (priFont.getUlThick ())
       , nx (priFont.getNx ())
       , ny (priFont.getNy ())
       , atlasBuf (priFont.getAtlas ())
@@ -239,6 +241,8 @@ namespace zutty
          px = facesize.width;
          py = facesize.height;
          baseline = 0;
+         ulTop = py - 1.0;
+         ulThick = 1.0;
       }
       logI << "Glyph size " << px << "x" << py << std::endl;
 
@@ -248,10 +252,21 @@ namespace zutty
       if (!overlay && face->height)
       {
          // If we are loading a fixed bitmap strike of an otherwise scaled
-         // font, we need the baseline metric.
+         // font, we need the baseline as well as the underline metrics.
          double tpy_asc = opts.fontsize *
             (double)face->ascender / face->units_per_EM;
          baseline = trunc (tpy_asc);
+
+         double utop = opts.fontsize *
+            (double)face->underline_position / face->units_per_EM;
+         double uthick = opts.fontsize *
+            (double)face->underline_thickness / face->units_per_EM;
+         ulTop = baseline - utop - uthick / 2.0;
+         ulThick = uthick;
+
+         logI << "Baseline " << baseline
+              << ", underline top at " << ulTop << " thickness " << ulThick
+              << std::endl;
       }
    }
 
@@ -277,6 +292,16 @@ namespace zutty
          baseline = trunc (tpy_asc);
       }
       logI << "Glyph size " << px << "x" << py << ", baseline " << baseline
+           << std::endl;
+
+      double utop = opts.fontsize *
+         (double)face->underline_position / face->units_per_EM;
+      double uthick = opts.fontsize *
+         (double)face->underline_thickness / face->units_per_EM;
+      ulTop = baseline - utop - uthick / 2.0;
+      ulThick = uthick;
+
+      logI << "Underline top at " << ulTop << " thickness " << ulThick
            << std::endl;
    }
 

@@ -39,6 +39,8 @@ namespace zutty
       uint16_t getPx () const { return px; };
       uint16_t getPy () const { return py; };
 
+      const float* getUlMetrics () const { return ulMetrics; };
+
       const Font& getRegular () const {
          return * fontRegular.get ();
       };
@@ -46,25 +48,32 @@ namespace zutty
       bool hasBold () const { return fontBold.get () != nullptr; }
 
       const Font& getBold () const {
-         if (! hasBold ())
-            throw std::runtime_error ("No Bold font variant present!");
-         return * fontBold.get ();
+         if (hasBold ())
+            return * fontBold.get ();
+         else
+            return * fontRegular.get ();
       };
 
       bool hasItalic () const { return fontItalic.get () != nullptr; }
 
       const Font& getItalic () const {
-         if (! hasItalic ())
-            throw std::runtime_error ("No Italic font variant present!");
-         return * fontItalic.get ();
+         if (hasItalic ())
+            return * fontItalic.get ();
+         else
+            return * fontRegular.get ();
       };
 
       bool hasBoldItalic () const { return fontBoldItalic.get () != nullptr; }
 
       const Font& getBoldItalic () const {
-         if (! hasBoldItalic ())
-            throw std::runtime_error ("No BoldItalic font variant present!");
-         return * fontBoldItalic.get ();
+         if (hasBoldItalic ())
+            return * fontBoldItalic.get ();
+         else if (hasItalic ())
+            return * fontItalic.get ();
+         else if (hasBold ())
+            return * fontBold.get ();
+         else
+            return * fontRegular.get ();
       };
 
       bool hasDoubleWidth () const { return fontDoubleWidth.get () != nullptr; }
@@ -87,6 +96,7 @@ namespace zutty
    private:
       uint16_t px = 0; // glyph width in pixels
       uint16_t py = 0; // glyph height in pixels
+      float ulMetrics [8];
       std::unique_ptr <Font> fontRegular = nullptr;
       std::unique_ptr <Font> fontBold = nullptr;
       std::unique_ptr <Font> fontItalic = nullptr;

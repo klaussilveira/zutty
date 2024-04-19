@@ -19,6 +19,7 @@ layout (binding = 3) uniform lowp sampler2DArray atlas_dw;
 layout (binding = 4) uniform lowp sampler2D atlasMap_dw;
 uniform lowp ivec2 glyphSize;
 uniform lowp ivec2 sizeChars;
+uniform lowp vec2 ulMetrics [4]; // Per-font underlines: .x: top, .y: thickness
 uniform lowp ivec3 cursorColor;
 uniform lowp ivec4 cursorPos; // .xy: current; .zw: previous
 uniform lowp int cursorStyle;
@@ -41,11 +42,34 @@ layout (std430, binding = 0) buffer CharVideoMem
    Cell cells [];
 } vmem;
 
-vec3 colorFromRGBu8 (highp uint v)
+vec3 colorFromRGBu8 (in highp uint v)
 {
    return vec3 (float (bitfieldExtract (v, 0, 8)),
                 float (bitfieldExtract (v, 8, 8)),
                 float (bitfieldExtract (v, 16, 8))) / 255.0;
+}
+
+vec3 underlinedBg (in bool underline, in vec2 ulMetrics, in int y,
+                   in vec3 bg, in vec3 fg)
+{
+   if (!underline)
+      return bg;
+
+   float ulTop = ulMetrics.x;
+   float ulThick = ulMetrics.y;
+   int yStart = int (floor (ulTop));
+   int yEnd = int (ceil (ulTop + ulThick));
+
+   if (y < yStart || yEnd < y)
+      return bg;
+
+   float lumi = 1.0;
+   if (y == yEnd)
+      lumi = fract (ulTop + ulThick);
+   if (y == yStart)
+      lumi = lumi - fract (ulTop);
+
+   return mix (bg, fg, lumi);
 }
 
 void main ()
@@ -137,11 +161,13 @@ void main ()
    {  // render regular cell
       for (int k = 0; k < cellSize.y; k++)
       {
+         vec3 ulBg = underlinedBg (underline == 1u, ulMetrics [fontIdx],
+                                   k, bgColor, fgColor);
          for (int j = 0; j < cellSize.x; j++)
          {
             ivec3 txc = ivec3 (src + ivec2 (j, k), fontIdx);
             float lumi = texelFetch (atlas, txc, 0).r;
-            vec4 pixel = vec4 (mix (bgColor, fgColor, lumi), 1.0);
+            vec4 pixel = vec4 (mix (ulBg, fgColor, lumi), 1.0);
             imageStore (imgOut, dst + ivec2 (j, k), pixel);
          }
       }
@@ -150,11 +176,13 @@ void main ()
    {  // render double-width cell
       for (int k = 0; k < cellSize.y; k++)
       {
+         vec3 ulBg = underlinedBg (underline == 1u, ulMetrics [fontIdx],
+                                   k, bgColor, fgColor);
          for (int j = 0; j < cellSize.x; j++)
          {
             ivec3 txc = ivec3 (src + ivec2 (j, k), fontIdx);
             float lumi = texelFetch (atlas_dw, txc, 0).r;
-            vec4 pixel = vec4 (mix (bgColor, fgColor, lumi), 1.0);
+            vec4 pixel = vec4 (mix (ulBg, fgColor, lumi), 1.0);
             imageStore (imgOut, dst + ivec2 (j, k), pixel);
          }
       }
@@ -174,15 +202,6 @@ void main ()
             vec4 pixel = vec4 (mix (bgColor, fgColor, lumi), 1.0);
             imageStore (imgOut, dst + ivec2 (j, k), pixel);
          }
-      }
-   }
-
-   if (underline == 1u)
-   {
-      vec4 pixel = vec4 (fgColor, 1.0);
-      for (int j = 0; j < cellSize.x; j++)
-      {
-         imageStore (imgOut, dst + ivec2 (j, cellSize.y - 1), pixel);
       }
    }
 

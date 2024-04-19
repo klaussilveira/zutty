@@ -127,8 +127,8 @@ namespace zutty
       GLuint T_atlasMap_dw = 0;
       GLuint T_output = 0;
       GLint A_pos, A_vertexTexCoord;
-      GLint compU_glyphSize, compU_sizeChars, compU_cursorColor;
-      GLint compU_cursorPos, compU_cursorStyle;
+      GLint compU_glyphSize, compU_sizeChars, compU_ulMetrics;
+      GLint compU_cursorColor, compU_cursorPos, compU_cursorStyle;
       GLint compU_selectRect, compU_selectRectMode, compU_selectDamage;
       GLint compU_deltaFrame, compU_showWraps, compU_hasDoubleWidth;
       GLint drawU_viewPixels;

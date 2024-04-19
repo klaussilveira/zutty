@@ -215,27 +215,13 @@ namespace zutty
       glCheckError ();
 
       setupAtlasTexture (reg, 0);
-
-      if (fontpk->hasBold ())
-         setupAtlasTexture (fontpk->getBold (), 1);
-      else
-         setupAtlasTexture (fontpk->getRegular (), 1);
-
-      if (fontpk->hasItalic ())
-         setupAtlasTexture (fontpk->getItalic (), 2);
-      else
-         setupAtlasTexture (fontpk->getRegular (), 2);
-
-      if (fontpk->hasBoldItalic ())
-         setupAtlasTexture (fontpk->getBoldItalic (), 3);
-      else if (fontpk->hasItalic ())
-         setupAtlasTexture (fontpk->getItalic (), 3);
-      else if (fontpk->hasBold ())
-         setupAtlasTexture (fontpk->getBold (), 3);
-      else
-         setupAtlasTexture (fontpk->getRegular (), 3);
+      setupAtlasTexture (fontpk->getBold (), 1);
+      setupAtlasTexture (fontpk->getItalic (), 2);
+      setupAtlasTexture (fontpk->getBoldItalic (), 3);
 
       setupAtlasMappingTexture (reg, GL_TEXTURE2, T_atlasMap);
+
+      glUniform2fv (compU_ulMetrics, 8, fontpk->getUlMetrics ());
 
       // Setup atlas texture for double-width characters
       if (fontpk->hasDoubleWidth ())
@@ -427,6 +413,7 @@ namespace zutty
 
       compU_glyphSize = glGetUniformLocation (P_compute, "glyphSize");
       compU_sizeChars = glGetUniformLocation (P_compute, "sizeChars");
+      compU_ulMetrics = glGetUniformLocation (P_compute, "ulMetrics");
       compU_cursorColor = glGetUniformLocation (P_compute, "cursorColor");
       compU_cursorPos = glGetUniformLocation (P_compute, "cursorPos");
       compU_cursorStyle = glGetUniformLocation (P_compute, "cursorStyle");
@@ -440,6 +427,7 @@ namespace zutty
       logT << "compute program:"
            << " uniform glyphSize=" << compU_glyphSize
            << " sizeChars=" << compU_sizeChars
+           << " ulMetrics=" << compU_ulMetrics
            << " cursorColor=" << compU_cursorColor
            << " cursorPos=" << compU_cursorPos
            << " cursorStyle=" << compU_cursorStyle

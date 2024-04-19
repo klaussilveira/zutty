@@ -61,6 +61,8 @@ namespace zutty
       uint16_t getBaseline () const { return baseline; };
       uint16_t getNx () const { return nx; };
       uint16_t getNy () const { return ny; };
+      float getUlTop () const { return ulTop; };
+      float getUlThick () const { return ulThick; };
 
       const std::vector <uint8_t>& getAtlas () const { return atlasBuf; };
       const uint8_t* getAtlasData () const { return atlasBuf.data (); };
@@ -80,6 +82,8 @@ namespace zutty
       uint16_t px = 0; // glyph width in pixels
       uint16_t py = 0; // glyph height in pixels
       uint16_t baseline = 0; // number of pixels above baseline
+      float ulTop = 0;   // underline top from glyph top in pixels
+      float ulThick = 0; // underline thickness in pixels
       uint16_t nx = 0; // number of glyphs in atlas texture per row
       uint16_t ny = 0; // number of rows in atlas texture
       std::vector <uint8_t> atlasBuf; // loaded atlas data
