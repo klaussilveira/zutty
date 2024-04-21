@@ -56,6 +56,7 @@ static std::unique_ptr <SelectionManager> selMgr = nullptr;
 static Display* xDisplay = nullptr;
 static Window xWindow;
 static Atom wmDeleteMessage;
+static XWMHints wmHints;
 static XSizeHints sizeHints;
 static Colormap colormap;
 
@@ -203,7 +204,6 @@ makeXWindow (const char* name, int width, int height, int px, int py,
       classHint.res_name = (char *)opts.name;
       classHint.res_class = (char *)"Zutty";
 
-      XWMHints wmHints;
       wmHints.input = true;
       wmHints.initial_state = NormalState;
       wmHints.flags = InputHint | StateHint;
@@ -1198,6 +1198,21 @@ handleOsc (int cmd, const std::string& arg)
 }
 
 static void
+handleBell ()
+{
+   if (opts.bellIsAudible)
+   {
+      XBell (xDisplay, 0);
+   }
+
+   if (opts.bellIsUrgent)
+   {
+      wmHints.flags |= XUrgencyHint;
+      XSetWMHints (xDisplay, xWindow, &wmHints);
+   }
+}
+
+static void
 printGLInfo (EGLDisplay eglDpy)
 {
    std::cout << "\nEGL_VERSION     = " << eglQueryString (eglDpy, EGL_VERSION)
@@ -1243,7 +1258,7 @@ static int
 handleXError (Display* dpy, XErrorEvent* ev)
 {
    logE << "Exiting on received X error event:" << std::endl;
-   XmuPrintDefaultErrorMessage(dpy, ev, stdout);
+   XmuPrintDefaultErrorMessage (dpy, ev, stdout);
    fflush (stdout);
 
    renderer = nullptr; // ~Renderer () shuts down renderer thread
@@ -1459,7 +1474,7 @@ main (int argc, char* argv[])
    vt->setRefreshHandler ([] (const zutty::Frame& f) { renderer->update (f); });
    vt->setOscHandler ([] (int cmd, const std::string& arg)
                       { handleOsc (cmd, arg); });
-   vt->setBellHandler ([] () { XBell (xDisplay, 0); });
+   vt->setBellHandler ([] () { handleBell (); });
 
    // We might not get a ConfigureNotify event when the window first appears:
    vt->resize (winWidth, winHeight);

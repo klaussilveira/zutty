@@ -329,6 +329,8 @@ namespace zutty
          altScrollMode = getBool ("altScroll");
          altSendsEscape = getBool ("altSendsEscape");
          autoCopyMode = getBool ("autoCopy");
+         bellIsAudible = getBool ("bellIsAudible");
+         bellIsUrgent = getBool ("bellIsUrgent");
          boldColors = getBool ("boldColors");
          login = getBool ("login");
          showWraps = getBool ("showWraps");
