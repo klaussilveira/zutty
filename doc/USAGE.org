@@ -4,9 +4,19 @@
 
 * Installation
 
-You will probably need to install Zutty from source. This is not as
+Nowadays Zutty comes packaged by most major Linux distributions as
+well as BSDs, so you might want to install Zutty from a package
+provided by your Linux distro or BSD port. It is recommended that you
+check whether it is up-to-date. Refuse anything older than the latest
+published release (and ask your package provider to update it). Please
+refer to [[https://git.hq.sig7.se/zutty.git/tags][git tags]] for authoritative release information.
+
+If you want to run the very latest commit, you will probably need to
+install Zutty from source. You will also have to do this if you want
+to make your own modifications and debug the program. This is not as
 scary as it might seem, because Zutty has very few dependencies and is
-a relatively small program.
+a relatively small program. Below are all the steps you need to go
+through.
 
 ** 1. Install build dependencies
 
@@ -596,7 +606,7 @@ If you prefer scalable fonts (e.g., because you have a high-resolution
 HiDPI display or prefer LARGE glyphs with a more modern look), Zutty
 works well with freely available scaled terminal fonts such as
 Anonymous Pro, Deja Vu Sans Mono, Free Mono, Hack, Inconsolata,
-Liberation Mono, Source Code Pro, and possibly many more.
+Liberation Mono, and possibly many more (see below for a list).
 
 The rest of this section gives Debian-specific recommendations; use it
 as a source of inspiration if you use a different distribution. The
@@ -641,6 +651,21 @@ glyphs provided by different fonts for the same code point is beyond
 the scope of this document. [[https://en.wikipedia.org/wiki/Han_unification#Examples_of_language-dependent_glyphs][This table]] might be useful to identify
 variants; copy-paste any glyph in a given row into Zutty and see which
 variant the current font gives you!
+
+Finally: a couple of freely downloadable, modern scalable fonts known
+to work well with Zutty (in no particular order):
+- Fira Code
+- Hasklig
+- JetBrains Mono
+- Source Code Pro
+
+These (and possibly many more) are suitable for relatively high font
+sizes (for high resolution displays) as compared to fixed-size bitmap
+fonts (usually designed for 72 dpi). Pro tip: check the Zutty font
+rasterization tests (a part of the automated testing suite) [[https://git.hq.sig7.se/zutty.git/blob/HEAD:/test/fonts.sh][here]] or at
+=test/fonts.sh= in your checked out Zutty source tree. It contains
+human-readable instructions on how to set up most fonts mentioned
+above for use with Zutty.
 
 *** Making fonts discoverable
 
