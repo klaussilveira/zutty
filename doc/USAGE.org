@@ -204,6 +204,7 @@ To view the list of options, issue =zutty -h= (short for =-help=):
 :   -shell        Shell program to run
 :   -showWraps    Show wrap marks at right margin
 :   -title        Window title (default: Zutty)
+:   -T            Equivalent to -title
 :   -quiet        Silence logging output
 :   -verbose      Output info messages
 :   -e            Command line to run
@@ -421,6 +422,7 @@ to see this when debugging Zutty or an application writing text at the
 right margin.
 
 :   -title        Window title (default: Zutty)
+:   -T            Equivalent to -title
 
 Set the title of the Zutty window. A title configured in the X
 resource database will be overridden by usage of the =-e= option,
@@ -428,6 +430,7 @@ which sets the title to the basename of the program to be run. Passing
 the title on the command line takes precedence over the title implied
 by =-e=.  In any case, the title can be overridden at runtime by
 escape sequences output by the shell (or any program executed by it).
+If both =-title= and =-T= are given the value of =-T= will be used.
 
 ** Shell/command specification
 

@@ -75,6 +75,7 @@ namespace zutty
       {"shell",       SepArg,   nullptr,   nullptr,   "Shell program to run"},
       {"showWraps",   NoArg,    "true",    "false",   "Show wrap marks at right margin"},
       {"title",       SepArg,   nullptr,   "Zutty",   "Window title"},
+      {"T",           SepArg,   nullptr,   nullptr,   "Equivalent to -title"},
       {"quiet",       NoArg,    "true",    "false",   "Silence logging output"},
       {"verbose",     NoArg,    "true",    "false",   "Output info messages"},
       {"e",           SkipLn,   nullptr,   nullptr,   "Command line to run"},
