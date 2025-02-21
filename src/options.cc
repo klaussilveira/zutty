@@ -316,7 +316,9 @@ namespace zutty
          shell = get ("shell", getenv ("SHELL"));
          if (!shell)
             shell = "bash";
-         title = get ("title", nullptr, &titleSource);
+         title = get ("T", nullptr, &titleSource);
+         if (!title)
+            title = get ("title", nullptr, &titleSource);
          getColor ("fg", fg);
          getColor ("bg", bg);
          rv = getBool ("rv");
@@ -329,6 +331,8 @@ namespace zutty
          altScrollMode = getBool ("altScroll");
          altSendsEscape = getBool ("altSendsEscape");
          autoCopyMode = getBool ("autoCopy");
+         bellIsAudible = getBool ("bellIsAudible");
+         bellIsUrgent = getBool ("bellIsUrgent");
          boldColors = getBool ("boldColors");
          login = getBool ("login");
          showWraps = getBool ("showWraps");

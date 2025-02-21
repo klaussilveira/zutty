@@ -261,6 +261,16 @@ namespace zutty
          logW << "Failed to load boldItalic variant: " << e.what () << std::endl;
       }
 
+      // Initialize the underline metrics
+
+      ulMetrics [0] = getRegular().getUlTop ();
+      ulMetrics [1] = getRegular().getUlThick ();
+      ulMetrics [2] = getBold().getUlTop ();
+      ulMetrics [3] = getBold().getUlThick ();
+      ulMetrics [4] = getItalic().getUlTop ();
+      ulMetrics [5] = getItalic().getUlThick ();
+      ulMetrics [6] = getBoldItalic().getUlTop ();
+      ulMetrics [7] = getBoldItalic().getUlThick ();
 
       // Look for & initialize the double-width font
 

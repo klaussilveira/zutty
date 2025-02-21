@@ -36,6 +36,8 @@ namespace zutty
       , px (priFont.getPx ())
       , py (priFont.getPy ())
       , baseline (priFont.getBaseline ())
+      , ulTop (priFont.getUlTop ())
+      , ulThick (priFont.getUlThick ())
       , nx (priFont.getNx ())
       , ny (priFont.getNy ())
       , atlasBuf (priFont.getAtlas ())
@@ -63,6 +65,10 @@ namespace zutty
       if (c == Unicode_Replacement_Character)
          return true;
 
+      // Discard everything outside the Basic Multilingual Plane
+      if (c > std::numeric_limits<uint16_t>::max ())
+         return false;
+
       return ((dwidth && wcwidth (c) == 2) ||
               (!dwidth && wcwidth (c) < 2));
    }
@@ -81,7 +87,7 @@ namespace zutty
          throw std::runtime_error (std::string ("Failed to load font ") +
                                    filename);
 
-      /* Determine the number of glyphs to actually load, based on wcwidth ()
+      /* Determine the number of glyphs to actually load.
        * We need this number up front to compute the atlas geometry.
        */
       int num_glyphs = 0;
@@ -174,13 +180,6 @@ namespace zutty
          charcode = FT_Get_Next_Char (face, charcode, &gindex);
       }
 
-      if (loadSkipCount)
-      {
-         logI << "Skipped loading " << loadSkipCount << " code point(s) "
-              << "outside the Basic Multilingual Plane"
-              << std::endl;
-      }
-
       FT_Done_Face (face);
       FT_Done_FreeType (ft);
    }
@@ -239,6 +238,8 @@ namespace zutty
          px = facesize.width;
          py = facesize.height;
          baseline = 0;
+         ulTop = py - 1.0;
+         ulThick = 1.0;
       }
       logI << "Glyph size " << px << "x" << py << std::endl;
 
@@ -248,10 +249,21 @@ namespace zutty
       if (!overlay && face->height)
       {
          // If we are loading a fixed bitmap strike of an otherwise scaled
-         // font, we need the baseline metric.
+         // font, we need the baseline as well as the underline metrics.
          double tpy_asc = opts.fontsize *
             (double)face->ascender / face->units_per_EM;
          baseline = trunc (tpy_asc);
+
+         double utop = opts.fontsize *
+            (double)face->underline_position / face->units_per_EM;
+         double uthick = opts.fontsize *
+            (double)face->underline_thickness / face->units_per_EM;
+         ulTop = baseline - utop - uthick / 2.0;
+         ulThick = uthick;
+
+         logI << "Baseline " << baseline
+              << ", underline top at " << ulTop << " thickness " << ulThick
+              << std::endl;
       }
    }
 
@@ -278,6 +290,16 @@ namespace zutty
       }
       logI << "Glyph size " << px << "x" << py << ", baseline " << baseline
            << std::endl;
+
+      double utop = opts.fontsize *
+         (double)face->underline_position / face->units_per_EM;
+      double uthick = opts.fontsize *
+         (double)face->underline_thickness / face->units_per_EM;
+      ulTop = baseline - utop - uthick / 2.0;
+      ulThick = uthick;
+
+      logI << "Underline top at " << ulTop << " thickness " << ulThick
+           << std::endl;
    }
 
    void Font::loadFace (const FT_Face& face, FT_ULong c)
@@ -293,16 +315,6 @@ namespace zutty
 
    void Font::loadFace (const FT_Face& face, FT_ULong c, const AtlasPos& apos)
    {
-      if (c > std::numeric_limits<uint16_t>::max ())
-      {
-        #ifdef DEBUG
-         logT << "Skip loading code point 0x" << std::hex << c << std::dec
-              << " outside the Basic Multilingual Plane" << std::endl;
-        #endif
-         ++loadSkipCount;
-         return;
-      }
-
       if (FT_Load_Char (face, c, FT_LOAD_RENDER))
       {
          throw std::runtime_error (

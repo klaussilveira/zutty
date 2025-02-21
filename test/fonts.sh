@@ -111,28 +111,28 @@ function FONTS_LIBERATION_MONO {
     # Package: fonts-liberation
 
     export UUT_ARGS="-font LiberationMono -fontsize 12"
-    CHECK font_LM_12 31fffb64b521d8ad66d6ab9251b62a7f
+    CHECK font_LM_12 9ea66f51231dcc20de9fae19c552de38
 
     export UUT_ARGS="-font LiberationMono -fontsize 15"
-    CHECK font_LM_15 c555151b625b6703c2bc53d77cbcd597
+    CHECK font_LM_15 16e68d535d232bc2970052e26eca748c
 
     export UUT_ARGS="-font LiberationMono -fontsize 18"
-    CHECK font_LM_18 8d6c520db5159cbe48ae99de3805339a
+    CHECK font_LM_18 39c19d7d42f9249c39f9fc6798aca4c6
 
     export UUT_ARGS="-font LiberationMono -fontsize 21"
-    CHECK font_LM_21 164ffa71970bb5f6e1199b1a3acbd36c
+    CHECK font_LM_21 63550ee26a269978f642c00ad0f749ab
 
     export UUT_ARGS="-font LiberationMono -fontsize 24"
-    CHECK font_LM_24 1b0acf7752a4e5d6cb23ddfb31e71251
+    CHECK font_LM_24 fd5ae539b845e823207071123ef31438
 
     export UUT_ARGS="-font LiberationMono -fontsize 27"
-    CHECK font_LM_27 7215c6b32ded01af7f8af17963a2d8b9
+    CHECK font_LM_27 3dcb454c2fc372a18e4cab6ef0472c63
 
     export UUT_ARGS="-font LiberationMono -fontsize 30"
-    CHECK font_LM_30 768f44b7d5083afd4cfb21e0e723be24
+    CHECK font_LM_30 f639c17df8c72fbdec83f4922401ca74
 
     export UUT_ARGS="-font LiberationMono -fontsize 37"
-    CHECK font_LM_37 d34ca5f0381c1d453b31b89e550ee7bd
+    CHECK font_LM_37 f796e4356b3d2c838ebc9a4ce08fcb29
 }
 
 function FONTS_DEJA_VU_SANS_MONO {
@@ -141,28 +141,28 @@ function FONTS_DEJA_VU_SANS_MONO {
     # Package: fonts-dejavu-core
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 12"
-    CHECK font_DV_12 a919b6ab8113259acdb3d3fe54148f63
+    CHECK font_DV_12 9090771135527719714f844e6063a914
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 15"
-    CHECK font_DV_15 c7636d3f0e1a88ffb61894f615ea63b1
+    CHECK font_DV_15 bbd4ef117344f73cd14579bc29dd0573
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 18"
-    CHECK font_DV_18 ea7b26c958113d5735590debbfc8511e
+    CHECK font_DV_18 93c144ce3c5e80d33f16240f225294e7
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 21"
-    CHECK font_DV_21 a007cb618591cf6aac5dd51ec44f7b5c
+    CHECK font_DV_21 bee642f6e36bcea483451905994ad49d
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 24"
-    CHECK font_DV_24 44530fbe8571346a1720cc8b90573343
+    CHECK font_DV_24 aa57b67a4ad08d5e655560e607794713
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 27"
-    CHECK font_DV_27 236eb889c98b1f6052beb8bb355dd6d1
+    CHECK font_DV_27 3d14bbc2fc01424c6b5669b1b01a630a
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 30"
-    CHECK font_DV_30 60a6f8a5461c0bb1ab935bd4028d74f4
+    CHECK font_DV_30 c2a3efdd4aaf717b3d821682f7d89a06
 
     export UUT_ARGS="-font DejaVuSansMono -fontsize 37"
-    CHECK font_DV_37 7c2c03af7b91aa62be090eff131dd621
+    CHECK font_DV_37 2c36936c319a18c46072f3d8250b2e0c
 }
 
 function FONTS_FIRA_CODE {
@@ -171,28 +171,28 @@ function FONTS_FIRA_CODE {
     # URL: https://github.com/tonsky/FiraCode/releases/download/6.2/Fira_Code_v6.2.zip
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 12"
-    CHECK font_FC_12 640d0800ea2930c07ded571a44b82827
+    CHECK font_FC_12 7455799c3de6753e5b91a6ae43ea0afb
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 15"
-    CHECK font_FC_15 138ab56e5a5aaccb752f951136102928
+    CHECK font_FC_15 e644cd42b7ea38290615b829aa9c5b87
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 18"
-    CHECK font_FC_18 8fe66345a5496fcdc5ad2115217e23be
+    CHECK font_FC_18 cdef496458f1ee34bb3168c47af665ab
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 21"
-    CHECK font_FC_21 9d3d70646a8cd3127741eea7442be6a7
+    CHECK font_FC_21 8b2d2c04882ff815adca58ca70900d2c
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 24"
-    CHECK font_FC_24 7b51ac61413f8f0aa77249b4d9ba135e
+    CHECK font_FC_24 c398e86601130ebb727db6f69a5a406a
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 27"
-    CHECK font_FC_27 7082254cbb870e36dfce0133b069445e
+    CHECK font_FC_27 423a16f3227402b06bf9c789afcb8dbf
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 30"
-    CHECK font_FC_30 2b49a0552ce08634eba19f9c4e8dacc1
+    CHECK font_FC_30 73fd555bc0070df9fcf1435addb5589d
 
     export UUT_ARGS="-fontpath deps/fonts -font FiraCode -fontsize 37"
-    CHECK font_FC_37 4978a74c68136b076bbc0672bcef4638
+    CHECK font_FC_37 67f6120a6fd84637792b04ea9d41a20b
 }
 
 function FONTS_JETBRAINS_MONO {
@@ -201,28 +201,28 @@ function FONTS_JETBRAINS_MONO {
     # URL: https://github.com/JetBrains/JetBrainsMono/releases/download/v2.304/JetBrainsMono-2.304.zip
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 12"
-    CHECK font_JB_12 599cd7ae111abfc522ad4053d6e9652f
+    CHECK font_JB_12 1d12a448e5d48ece057ee04c146cff58
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 15"
-    CHECK font_JB_15 cef22687d9d8e27402cdd3b6c33c7390
+    CHECK font_JB_15 b3bde6c91f06f5912f7984becd43b497
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 18"
-    CHECK font_JB_18 29ecd8a1e8cd5f178e7cda31c267da2f
+    CHECK font_JB_18 87b0a778432d3a604dd325a87397f09f
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 21"
-    CHECK font_JB_21 4445db4216dd447b795bc3799e5073ba
+    CHECK font_JB_21 f0079ec131d279b98079c7da757c2cdf
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 24"
-    CHECK font_JB_24 a6ba2c94fdd0f12bdfa0c029b1da7142
+    CHECK font_JB_24 d6a53762baffed162f89e2281abec697
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 27"
-    CHECK font_JB_27 c40a94f43c069afb003dda64885361fa
+    CHECK font_JB_27 185e2b5a24c038ba307be36a7706c66b
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 30"
-    CHECK font_JB_30 835181a226494e04604c4959326e61b3
+    CHECK font_JB_30 5bc37123fecf3d9e671f9eaae7f720e3
 
     export UUT_ARGS="-fontpath deps/fonts -font JetBrainsMono -fontsize 37"
-    CHECK font_JB_37 75e688ce08af192e50fe5c68a9711a42
+    CHECK font_JB_37 33fa1fdf7848d3f1054489318509de89
 }
 
 function FONTS_SOURCE_CODE_PRO {
@@ -231,28 +231,28 @@ function FONTS_SOURCE_CODE_PRO {
     # URL: https://github.com/adobe-fonts/source-code-pro/releases/download/2.042R-u%2F1.062R-i%2F1.026R-vf/TTF-source-code-pro-2.042R-u_1.062R-i.zip
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 12"
-    CHECK font_SC_12 97716b9da937e72ff50dd9075f80d6b4
+    CHECK font_SC_12 d917d67fc74ef6e50dc5a48d5c37aa73
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 15"
-    CHECK font_SC_15 4e1ec88a14d068f7af7943cf749b6933
+    CHECK font_SC_15 2cb4d8d575f430d6bed02e06574d2a39
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 18"
-    CHECK font_SC_18 70bd52feacbf8ab799dee6e9e72b0739
+    CHECK font_SC_18 4008f5d264358c61063bb88510f9f8b5
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 21"
-    CHECK font_SC_21 c3b857207c246e7795da9f9355f901d8
+    CHECK font_SC_21 bf780e4e797cb6811f2e27209cbb188d
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 24"
-    CHECK font_SC_24 b7ec0d21910a2f839a546415c09abe00
+    CHECK font_SC_24 ef527e736bac6b5e2802af6490a34e0a
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 27"
-    CHECK font_SC_27 21014b47db3b4c5d8451940b7ab2504f
+    CHECK font_SC_27 036201d4ece179bc0e0ad65d953a484a
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 30"
-    CHECK font_SC_30 5f6111fe8d838e4ec3c693731840d337
+    CHECK font_SC_30 9fe2b036301cd3d8a0b0035f51c95ba3
 
     export UUT_ARGS="-fontpath deps/fonts -font SourceCodePro -fontsize 37"
-    CHECK font_SC_37 ab12b513cbc5c60c3caa63d15cbc78ba
+    CHECK font_SC_37 544527237b9d98d4f95623b9ac9480ec
 }
 
 function FONTS_HASKLIG {
@@ -261,28 +261,28 @@ function FONTS_HASKLIG {
     # URL: https://github.com/i-tu/Hasklig/releases/download/v1.2/Hasklig-1.2.zip
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 12"
-    CHECK font_HA_12 b998fd966069c6b291745b5b42f98f58
+    CHECK font_HA_12 20828b3ce6745fd1353394141239586a
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 15"
-    CHECK font_HA_15 d8488c70f61fbc3810264ebdb4546613
+    CHECK font_HA_15 95ac0b50feb4ebb459af791e41796c03
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 18"
-    CHECK font_HA_18 89acad3fabaeeca63bd49fb9f518cb04
+    CHECK font_HA_18 d972dcde9ce200509cfeac884dd2b775
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 21"
-    CHECK font_HA_21 1796eaef7a979504bd4f4c041ad9fe04
+    CHECK font_HA_21 11310f0d15360ec13e6bf05f21b421c0
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 24"
-    CHECK font_HA_24 7cc187ac9b15c158701f0ea5958d4c11
+    CHECK font_HA_24 322935cbd0c12217b965d37651a02197
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 27"
-    CHECK font_HA_27 a227ed69abffa03bb27bc18bc2506bbb
+    CHECK font_HA_27 faeffa429d8985af9eba33457cd0558f
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 30"
-    CHECK font_HA_30 d79ecb1611bf52f831c943fbccc4d575
+    CHECK font_HA_30 4eda9c7500b8a40e0537aa1abbbf4168
 
     export UUT_ARGS="-fontpath deps/fonts -font Hasklig -fontsize 37"
-    CHECK font_HA_37 e734c222f7ac5f175b5634c688ae03d1
+    CHECK font_HA_37 c1ca0a1cd19cc58acd4486203795cb17
 }
 
 function FONTS_FREEMONO {
@@ -291,28 +291,28 @@ function FONTS_FREEMONO {
     # Package: fonts-freemono-ttf
 
     export UUT_ARGS="-font FreeMono -fontsize 12"
-    CHECK font_FM_12 29b0fcce8b6a147f0efe8c50056ba683
+    CHECK font_FM_12 756092686eaa661679b61de67a2a1ca0
 
     export UUT_ARGS="-font FreeMono -fontsize 15"
-    CHECK font_FM_15 e26b35105612da5280c38638b4bdc45a
+    CHECK font_FM_15 751af5105853a535d9a0b22b4f1150cb
 
     export UUT_ARGS="-font FreeMono -fontsize 18"
-    CHECK font_FM_18 0d6dfac310dcc5e743460780c2d0d025
+    CHECK font_FM_18 c35d09c61902c7201fa8164981546f21
 
     export UUT_ARGS="-font FreeMono -fontsize 21"
-    CHECK font_FM_21 ce3ac22c94a7918317db29568f59b5b1
+    CHECK font_FM_21 33d52edc4150c99c88d90577a7ddf2af
 
     export UUT_ARGS="-font FreeMono -fontsize 24"
-    CHECK font_FM_24 ad595ccd04f5f01173d05192669256be
+    CHECK font_FM_24 43d4e5b4449c72db6bf725c2c639458d
 
     export UUT_ARGS="-font FreeMono -fontsize 27"
-    CHECK font_FM_27 83a1216e00223413905cf5cc0a627998
+    CHECK font_FM_27 03b449c56615837dceccb8739d8f41cf
 
     export UUT_ARGS="-font FreeMono -fontsize 30"
-    CHECK font_FM_30 7db2adabd2071275c9d34a5ad27323d0
+    CHECK font_FM_30 85ff2a17b9795bbfd4764b366d780c21
 
     export UUT_ARGS="-font FreeMono -fontsize 37"
-    CHECK font_FM_37 0d503a83d1c5e0c3b6adc73939d3b200
+    CHECK font_FM_37 8c7a73ca3f0a35e5e568050aecdd004c
 }
 
 function FONTS_ANONYMOUS_PRO {
@@ -329,25 +329,25 @@ function FONTS_ANONYMOUS_PRO {
     # N.B.: Size 12 is a bitmap face that does not seem to work well ATM
 
     export UUT_ARGS="-fontpath deps/fonts -font AnonymousPro -fontsize 15"
-    CHECK font_AP_15 220e3de704236b9cf93e36c2081f5cc0
+    CHECK font_AP_15 419004f6d49d30b75a29b5a1fc3d7ecb
 
     export UUT_ARGS="-fontpath deps/fonts -font AnonymousPro -fontsize 18"
-    CHECK font_AP_18 f70d0397978c83c7215fcea1bbe1c0ed
+    CHECK font_AP_18 85c0a864c192bd79c23c38c9767864a4
 
     export UUT_ARGS="-fontpath deps/fonts -font AnonymousPro -fontsize 21"
-    CHECK font_AP_21 0ad427502619d85f397a8ac518261de1
+    CHECK font_AP_21 154d25a3281282e049ef5caf79af939b
 
     export UUT_ARGS="-fontpath deps/fonts -font AnonymousPro -fontsize 24"
-    CHECK font_AP_24 c186c082b5c1bb4088322a8a83029a34
+    CHECK font_AP_24 2b96321d83f33d67ea28677f5f7836e0
 
     export UUT_ARGS="-fontpath deps/fonts -font AnonymousPro -fontsize 27"
-    CHECK font_AP_27 a1ef62ef60cae2d40d683f1125c6659b
+    CHECK font_AP_27 a15ad4d0783c2c6c384964ab641c1f64
 
     export UUT_ARGS="-fontpath deps/fonts -font AnonymousPro -fontsize 30"
-    CHECK font_AP_30 c2fe545e429b374c2ba6876645a9719b
+    CHECK font_AP_30 1f101ec92df95d2e5f8dfa7961655b74
 
     export UUT_ARGS="-fontpath deps/fonts -font AnonymousPro -fontsize 37"
-    CHECK font_AP_37 d0172867057b4394c839f9e7b6a9817d
+    CHECK font_AP_37 75584d04d8c3b69a1350f53532ca19ad
 }
 
 FONTS_MISC_FIXED
